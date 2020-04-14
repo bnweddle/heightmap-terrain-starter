@@ -44,9 +44,10 @@
     <Compile Include="FPSCamera.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="ICamera.cs" />
+    <Compile Include="IHeightMap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Terrian.cs" />
+    <Compile Include="Terrain.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

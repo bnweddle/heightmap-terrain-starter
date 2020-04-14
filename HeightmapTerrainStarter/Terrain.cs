@@ -11,7 +11,7 @@ namespace HeightmapTerrainStarter
     /// <summary>
     /// A class representing terrain
     /// </summary>
-    public class Terrain
+    public class Terrain : IHeightMap
     {
         // The game this Terrain belongs to
         Game game;
@@ -57,6 +57,26 @@ namespace HeightmapTerrainStarter
             InitializeEffect(world);
         }
 
+        /// <summary>
+        /// Gets the height of the terrain at
+        /// the supplied world coordinates
+        /// </summary>
+        /// <param name="x">The x world coordinate</param>
+        /// <param name="z">The z world coordinate</param>
+        /// <returns></returns>
+        public float GetHeightAt(float x, float z)
+        {
+            Matrix inverseWorld = Matrix.Invert(effect.World);
+            Vector3 worldCoordinates = new Vector3(x, 0, z);
+            Vector3 modelCoordinates = Vector3.Transform(worldCoordinates, inverseWorld);
+
+            float tx = modelCoordinates.X;
+            float ty = -modelCoordinates.Z;
+
+            if (tx < 0 || ty < 0 || tx >= width || ty >= height) return 0;
+
+            return heights[(int)tx, (int)ty];
+        }
 
         /// <summary>
         /// Converts the supplied Texture2D into height data
