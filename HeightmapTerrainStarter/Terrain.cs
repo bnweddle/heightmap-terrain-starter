@@ -75,7 +75,34 @@ namespace HeightmapTerrainStarter
 
             if (tx < 0 || ty < 0 || tx >= width || ty >= height) return 0;
 
-            return heights[(int)tx, (int)ty];
+            if (tx < 0 || ty < 0 || tx > width - 2 || ty > height - 2) return 0;
+
+            // Determine which triangle our coordinate is in
+            if (tx - (int)tx < 0.5 && ty - (int)ty < 0.5)
+            {
+                // In the lower-left triangle
+                float xFraction = tx - (int)tx;
+                float yFraction = ty - (int)ty;
+                float xDifference = heights[(int)tx + 1, (int)ty] - heights[(int)tx, (int)ty];
+                float yDifference = heights[(int)tx, (int)ty + 1] - heights[(int)tx, (int)ty];
+                return heights[(int)tx, (int)ty]
+                    + xFraction * xDifference
+                    + yFraction * yDifference;
+
+            }
+            else
+            {
+                // In the upper-right triangle
+                float xFraction = (int)tx + 1 - tx;
+                float yFraction = (int)ty + 1 - ty;
+                float xDifference = heights[(int)tx + 1, (int)ty + 1] - heights[(int)tx, (int)ty + 1];
+                float yDifference = heights[(int)tx + 1, (int)ty + 1] - heights[(int)tx + 1, (int)ty];
+                return heights[(int)tx + 1, (int)ty + 1]
+                    - xFraction * xDifference
+                    - yFraction * yDifference;
+
+            }
+
         }
 
         /// <summary>
